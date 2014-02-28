@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block body %}
+<div class="left-col large-col">
+	<div class="box">
+		<p class="title">课程简介</p>
+		<p>{{ escape(handler.settings["course_intro"]) }} </p>
+	</div>
+	<div class="box">
+		<p class="title">教师队伍</p>
+		<ul id="teachers">
+			{% for teacher in teachers %}
+			<li>
+				<img src="{{ static_url("pic/teacher/") }}{{ teacher["id"]}}.jpg" alt="">
+				<div class="intro">
+					<a href="teacher?id={{ teacher["id"]}}" class="name">{{ teacher["name"]}}</a>
+					<p class="job">{{ teacher["job"]}}</p>
+				</div>
+			</li>
+			{% end %}
+		</ul>
+	</div>
+</div>
+<div class="right-col small-col">
+	<div class="box">
+		<div class="title">最新消息</div>
+		<ul >
+		{% for post in news %}
+			<li class="list">
+				<span class="prev-num">{{ post["post_time"].strftime("%m-%d") }}</span>
+				<a href="post?id={{ post["entry_id"] }}">{{ escape(post["title"]) }}</a>
+			</li>
+		{% end %}
+		</ul>
+	</div>
+	<div class="box">
+		<div class="title">友情链接</div>
+		<ul >
+		{% for link in links %}
+		<li class="list">
+			<span class="prev-num">&#9733;</span>
+			<a href="{{ escape(link["link"] )}}" class="item" target="_blank">{{ escape(link["title"]) }}</a>
+		</li>
+		{% end %}
+		</ul>
+	</div>
+</div>
+{% end %}

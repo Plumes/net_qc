@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block body %}
+<div class="left-col small-col">
+	<div id="category">
+		<ul class="nav nav-pills nav-stacked">
+		{% for category in cat_list %}
+			<li>				
+				<a href="category?p={{ category["parentid"] }}&id={{category["catid"]}}">
+				{% if cid==category["catid"] %}&#9654; {% end %}{{ escape(category["catname"])}}</a>
+			</li>
+		{% end %}
+		</ul>
+	</div>
+</div>
+<div class="right-col large-col">
+	<div id="entry">
+		<div id="title"><h3>{{post["title"]}}</h3></div>
+		<div id="details">{{post["post_time"].strftime("%Y年%m月%d日")}} {{escape(author)}}</div>
+		<div id="content">
+			{{ escape(post["content"]) }}
+		</div>
+		<div id="end">
+			<span class="pattern-left"></span><span class="title">E.O.T</span><span class="pattern-right"></span>
+		</div>
+	</div>
+</div>
+{% end %}

@@ -1,0 +1,210 @@
+body {
+	margin: 0px;
+	padding: 0px;
+	font-size: 14px;
+	color:#333;
+	text-decoration: none;
+	
+}
+#main-wrapper {
+}
+#header-wrapper {
+	border-top: 5px solid #333;
+	padding-top: 5px;
+	height:70px;
+	background-color: #f5f5f5;
+	margin-bottom: 40px;
+}
+#logo {
+	width:1000px;
+	margin:0px auto;
+}
+#course-name {
+	display: inline;
+	line-height: 60px;
+}
+#logo img {
+	height: 60px;
+}
+
+#content-wrapper {
+	width:1000px;
+	margin:0px auto;
+	position: relative;
+}
+#navbar {
+	width: 1000px;
+	height: 40px;
+	padding: 0px;
+	border: 0px;
+	margin: 0 0 20px 0;
+}
+#navbar li {
+	display: inline;
+	list-style: none;
+	
+}
+#navbar li a {
+	padding: 5px 18px;
+	height: 40px;
+	line-height: 40px;
+	background-color: #f5f5f5;
+	color: #333;
+	font-size: 18px;
+	letter-spacing: 2px;
+}
+#navbar li a:hover {
+	background-color: #ededed;
+	color: #333;
+	text-decoration: none;
+}
+#navbar li a.cur {
+	background-color: #ee4a45;
+	color: #fff;
+}
+.left-col {
+}
+.large-col {
+	width: 680px;
+}
+.small-col {
+	width:250px;
+}
+.left-col.small-col {
+	position: absolute;
+
+}
+.left-col .box {
+	border-top: 4px solid #75a8d3;
+	padding: 20px 0;
+	margin-bottom: 20px;
+}
+.left-col .box .title{
+	color:#069;
+	font-size: 18px;
+}
+ul#teachers {
+	padding: 0px;
+}
+ul#teachers li {
+	list-style-type: none;
+	height: 110px;
+	margin-bottom: 10px;
+	border-bottom: 1px solid #caccce;
+}
+ul#teachers li img {
+	max-width: 100px;
+	max-height: 100px;
+	float: left;
+	margin-right: 15px;
+}
+ul#teachers li .intro {
+	padding-top: 10px;
+}
+ul#teachers li .intro .name{
+	font-size: 16px;
+	line-height: 55px;
+	height: 55px;
+}
+ul#teachers li .intro a:hover {
+	text-decoration: none;
+}
+ul#teachers li .intro .job {
+	color: #333;
+}
+
+.right-col.small-col {
+	width: 250px;
+	position: absolute;
+	top:60px;
+	left:750px;
+
+}
+.right-col.large-col {
+	width:750px;
+	margin-left: 250px;
+}
+.right-col .box {
+	border: 1px solid #f5f5f5;
+	margin-bottom: 20px;
+}
+.right-col .box .title {
+	background-color: #f5f5f5;
+	padding: 0 10px;
+	height: 40px;
+	line-height: 40px;
+	font-size: 16px;
+}
+.right-col ul {
+	padding: 10px;
+}
+.right-col a {
+	color:#333;
+	text-decoration: none;
+}
+.list {
+	list-style-type: none;
+	line-height: 30px;
+
+}
+.list .prev-num {
+	padding: 0 5px 0 0;
+	margin: 0 5px 0 0;
+	color: #ee4a45;
+}
+.list a {
+	text-decoration: none;
+}
+.right-col a:hover {
+	color:#ee4a45;
+}
+#foot-wrapper {
+	background-color: #222;
+}
+.copyright {
+	width:1000px;
+	height:50px;
+	line-height: 50px;
+	color:#fff;
+	margin: 0px auto;
+}
+
+#category {
+	background-color: #eee;
+}
+#entry {
+	padding: 5px 50px;
+
+	border: 1px solid #eee;
+	border-bottom-color:#ccc;
+	margin-bottom: 20px;
+}
+#entry #title {
+	text-align: center;
+}
+#entry #details {
+	text-align: center;
+}
+#entry #content {
+	min-height: 500px;
+	margin-top: 20px;
+}
+#entry #end {
+	text-align: center;
+}
+#entry #end .pattern-left {
+	font-size: 16px;
+	display: inline-block;
+	margin-bottom: .3125em;
+	width: 1.375em;
+	height: .4375em;
+	vertical-align: middle;
+	background-position: 0;
+	background: rgba(0,0,0,0) url('https://img0.douban.com/ark/pics/reader/icon-patterns-v2.svg?v=3913832618') no-repeat;
+}
+#entry-list {
+	min-height: 900px;
+	padding: 20px;
+	border: 1px solid #ccc;
+	margin-bottom: 20px;
+}
