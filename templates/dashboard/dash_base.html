@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>控制台</title>
+	
+	<link rel="stylesheet" href="{{ static_url("bootstrap/css/bootstrap.min.css") }}">
+	<link rel="stylesheet" href="{{ static_url("css/dash_style.css") }}">
+	<script src="{{ static_url("js/jquery.min.js") }}"></script>
+	<script src="{{ static_url("bootstrap/js/bootstrap.min.js") }}"></script>
+
+	{% block include %}
+	{% end %}
+</head>
+<body>
+<div id="head-wrapper">
+	<div id="nav-wrapper">
+		<ul id="nav-bar">
+			<li><a>控制台</a></li>
+			<li><a href="{{ handler.settings["site_url"]}}dashboard/settings">设置</a></li>
+			<li><a>管理</a>
+				<ul>
+					<li><a href="{{ handler.settings["site_url"]}}dashboard/manage/posts/">文章</a></li>
+					<li><a href="{{ handler.settings["site_url"]}}dashboard/manage/users/">用户</a></li>
+					<li><a href="{{ handler.settings["site_url"]}}dashboard/manage/categories/">分类</a></li>
+				</ul>
+			</li>
+		</ul>
+		<ul id="user-oper">
+			<li><a>{{ escape(user) }}</a></li>
+			<li><a href="{{ handler.settings["site_url"]}}/logout">退出</a></li>
+		</ul>
+	</div>
+</div>
+{% block body %}
+{% end %}
+</body>
+{% block script %}
+{% end %}
+</html>

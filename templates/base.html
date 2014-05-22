@@ -3,8 +3,8 @@
 <head>
 	<meta charset="UTF-8">
 	<title>哈尔滨工业大学(威海)——计算机网络</title>
-	<link rel="stylesheet" href="static/style.css">
-	<link rel="stylesheet" href="static/bootstrap/css/bootstrap.min.css">
+	<link rel="stylesheet" href="{{ static_url("style.css")}}">
+	<link rel="stylesheet" href="{{ static_url("bootstrap/css/bootstrap.min.css")}}">
 </head>
 <body>
 	<div id="main-wrapper">
@@ -13,17 +13,29 @@
 				<img src="static/pic/logo.png" alt="">
 				<div id="course-name">{{ escape(handler.settings["course_name"]) }}</div>
 			</div>
-		</div>
-
-		<div id="content-wrapper">
 			<div id="nav-wrapper">
 				<ul id="navbar">
-					<li><a href="/" {% if cur==0 %} class="cur" {% end %}>首页</a></li>
+					<li><a href="{{ handler.settings["site_url"]}}" >首页</a></li>
 					{% for cat in categories %}
-						<li><a href= "category?p={{ cat["catid"] }}&id=1" {% if cur==cat["catid"] %} class="cur" {% end %}>{{ escape(cat["catname"]) }}</a></li>
+						<li>
+						<a {% if len(cat["child_cats"]) == 0 %} href="{{ handler.settings["site_url"]}}category?id={{ cat["catid"] }}" {% end %} >{{ escape(cat["catname"]) }}</a>
+						{% if len(cat["child_cats"])>0 %}
+							<ul>
+							{% for m_cat in cat["child_cats"] %}
+							<li>
+								<a href="{{ handler.settings["site_url"]}}category?id={{ m_cat["catid"] }}">{{ escape(m_cat["catname"]) }}</a>
+							</li>
+							{% end %}
+							</ul>
+						{% end %}
+						</li>
+
 					{% end %}
 				</ul>
 			</div>
+		</div>
+
+		<div id="content-wrapper">
 			{% block body %}{% end %}
 		</div>
 		<div id="foot-wrapper">

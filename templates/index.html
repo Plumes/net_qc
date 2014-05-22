@@ -11,7 +11,7 @@
 		<ul id="teachers">
 			{% for teacher in teachers %}
 			<li>
-				<img src="{{ static_url("pic/teacher/") }}{{ teacher["id"]}}.jpg" alt="">
+				<img src="{{ static_url("pic/teacher/{0}.jpg".format(teacher["id"]) ) }}" alt="">
 				<div class="intro">
 					<a href="teacher?id={{ teacher["id"]}}" class="name">{{ teacher["name"]}}</a>
 					<p class="job">{{ teacher["job"]}}</p>

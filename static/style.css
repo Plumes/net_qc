@@ -10,59 +10,98 @@ body {
 }
 #header-wrapper {
 	border-top: 5px solid #333;
-	padding-top: 5px;
-	height:70px;
 	background-color: #f5f5f5;
-	margin-bottom: 40px;
 }
 #logo {
 	width:1000px;
+	height: 70px;
 	margin:0px auto;
 }
 #course-name {
 	display: inline;
 	line-height: 60px;
 }
+
 #logo img {
 	height: 60px;
 }
 
 #content-wrapper {
 	width:1000px;
+
 	margin:0px auto;
+	margin-top: 40px;
 	position: relative;
+	background-color: #fff;
+	display:table;
+
+}
+#nav-wrapper {
+	background-color: #333;
 }
 #navbar {
 	width: 1000px;
 	height: 40px;
 	padding: 0px;
 	border: 0px;
-	margin: 0 0 20px 0;
+	margin: 0 auto;
+	overflow: hidden;
 }
-#navbar li {
-	display: inline;
+#navbar>li {
+	float:left;
 	list-style: none;
 	
 }
-#navbar li a {
-	padding: 5px 18px;
-	height: 40px;
-	line-height: 40px;
-	background-color: #f5f5f5;
-	color: #333;
-	font-size: 18px;
-	letter-spacing: 2px;
-}
-#navbar li a:hover {
-	background-color: #ededed;
-	color: #333;
+#navbar a {
 	text-decoration: none;
 }
-#navbar li a.cur {
+#navbar>li>a {
+	padding: 10px 18px;
+	height: 40px;
+	line-height: 40px;
+	color: #fff;
+	font-size: 17px;
+	letter-spacing: 2px;
+}
+#navbar>li:hover {
 	background-color: #ee4a45;
 	color: #fff;
+	text-decoration: none;
+}
+#navbar>li>ul {
+	display: none;
+	position: absolute;
+	margin: 0px;
+	padding: 0px;
+	background-color: #fff;
+	z-index: 9999;
+	-moz-box-shadow: 0 2px 4px 0 rgba(0,0,0,0.11);
+	-webkit-box-shadow: 0 2px 4px 0 rgba(0,0,0,0.11);
+	box-shadow: 0 2px 4px 0 rgba(0,0,0,0.11);
+}
+#navbar>li:hover>ul {
+	display: block;
+}
+#navbar>li>ul>li {
+	list-style: none;
+	border-bottom: 1px solid #ddd;
+}
+#navbar>li>ul>li>a {
+	padding: 10px 18px;
+	height: 40px;
+	line-height: 40px;
+	color: #333;
+	
+	font-size: 17px;
+	letter-spacing: 2px;
+}
+#navbar>li>ul>li:hover {
+	text-decoration: none;
+	color: #ee4a45;
+	background-color: #f5f5f5;
 }
 .left-col {
+	float: left;
 }
 .large-col {
 	width: 680px;
@@ -115,9 +154,8 @@ ul#teachers li .intro .job {
 
 .right-col.small-col {
 	width: 250px;
-	position: absolute;
-	top:60px;
-	left:750px;
+	margin-left: 50px;
+	float: left;
 
 }
 .right-col.large-col {
@@ -141,6 +179,11 @@ ul#teachers li .intro .job {
 .right-col a {
 	color:#333;
 	text-decoration: none;
+}
+.small-col .box {
+	-webkit-box-shadow: 0 10px 30px -4px #999;
+	-moz-box-shadow: 0 10px 30px -4px #999;
+	box-shadow: 0 10px 30px -4px #999;
 }
 .list {
 	list-style-type: none;
@@ -178,6 +221,9 @@ ul#teachers li .intro .job {
 	border: 1px solid #eee;
 	border-bottom-color:#ccc;
 	margin-bottom: 20px;
+	-webkit-box-shadow: 0 10px 30px -4px #999;
+	-moz-box-shadow: 0 10px 30px -4px #999;
+	box-shadow: 0 10px 30px -4px #999;
 }
 #entry #title {
 	text-align: center;
@@ -207,4 +253,7 @@ ul#teachers li .intro .job {
 	padding: 20px;
 	border: 1px solid #ccc;
 	margin-bottom: 20px;
+	-webkit-box-shadow: 0 10px 30px -4px #999;
+	-moz-box-shadow: 0 10px 30px -4px #999;
+	box-shadow: 0 10px 30px -4px #999;
 }

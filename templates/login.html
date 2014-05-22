@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% block body%}
+      <div class="login-container">
+        <div class="login-screen">
+        <form action="/dashboard/login" id="signin" method="post">
+          <div class="login-icon">
+            <img src="{{ static_url("flat-ui/images/icons/svg/pencils.svg")}}" alt="Welcome to Mail App" />
+            <h4>欢迎使用<small>在线考试</small></h4>
+          </div>
+
+          <div class="login-form">
+          <div class="tags">
+            登陆
+            <a href="/dashboard/signup" class="right">注册</a>
+          </div>
+            <div class="form-group">
+              <input type="text" class="form-control login-field" value="" placeholder="用户名" id="login-name" name="name" required/>
+              <label class="login-field-icon fui-user" for="login-name"></label>
+            </div>
+
+            <div class="form-group">
+              <input type="password" class="form-control login-field" value="" placeholder="密码" id="login-pass" name="pwd" required/>
+              <label class="login-field-icon fui-lock" for="login-pass"></label>
+            </div>
+
+            <input type="submit" class="btn btn-primary btn-lg btn-block" value="登陆" />
+          </div>
+          </form>
+        </div>
+      </div>
+{% end %}
+{% block script %}
+<script src="http://summerecho.com/sanxing/static/js/main.js"></script>
+<script>
+		$("#signin").submit(function(event) {
+		event.preventDefault();
+		if($("#signin").find(".alert")){ $("#signin .alert").remove(); }
+		//alert("hello");
+		var $form = $( this ),
+	    name = $form.find( "input[name='name']" ).val(),
+	    pwd = $form.find( "input[name='pwd']" ).val(),
+	    pwd = MD5(pwd);
+	    url = "/dashboard/login";
+	    var posting = $.post( url, { 'name':name,'pwd':pwd  } );
+	    posting.done(function( str ) {
+	    	data = JSON.parse(str);
+		    //console.log(str);
+		    if (data['res'] === 0){
+		    	location.href="/dashboard/";
+		    }
+		    else {
+		    	$("#signin").append('<div class="alert alert-danger"><a>'+data['msg']+'</a></div>');
+		    }
+
+  		});
+	});
+
+</script>
+{% end %}

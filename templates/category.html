@@ -1,18 +1,6 @@
 {% extends "base.html" %}
 {% block body %}
-<div class="left-col small-col">
-	<div id="category">
-		<ul class="nav nav-pills nav-stacked">
-		{% for category in cat_list %}
-			<li>				
-				<a href="category?p={{ category["parentid"] }}&id={{category["catid"]}}">
-				{% if cid==category["catid"] %}&#9654; {% end %}{{ escape(category["catname"])}}</a>
-			</li>
-		{% end %}
-		</ul>
-	</div>
-</div>
-<div class="right-col large-col">
+<div class="left-col large-col">
 	<div id="entry-list">
 		<table class="table">
 		    {% set cnt=1 %}
@@ -25,6 +13,20 @@
 			{% set cnt=cnt+1 %}
 			{% end %}
 		</table>
+	</div>
+</div>
+
+<div class="right-col small-col">
+	<div class="box">
+		<div class="title">本类热门文章</div>
+		<ul >
+		{% for item in hot_posts %}
+			<li class="list">
+				<span class="prev-num">{{ item["post_time"].strftime("%m-%d") }}</span>
+				<a href="post?id={{ item["entry_id"] }}">{{ escape(item["title"]) }}</a>
+			</li>
+		{% end %}
+		</ul>
 	</div>
 </div>
 {% end %}

@@ -1,0 +1,113 @@
+{% extends "dash_base.html" %}
+{% block include %}
+<script src="{{static_url("wysiwyg/bootstrap-wysiwyg.js")}}"></script>
+<script src="{{static_url("wysiwyg/external/jquery.hotkeys.js")}}"></script>
+<link href="{{static_url("font-awesome-4.0.3/css/font-awesome.css")}}" rel="stylesheet">
+{% end %}
+{% block body %}
+<div id="content-wrapper">
+	<div class="left-col large-col">
+		<form action="modify" method="post" id="new-post">
+			<input type="text" name="title" placeholder="题目" value="{{ post["title"] }}">
+			<input type="hidden" name="post_id" value="{{ post["entry_id"] }}">
+
+    <div class="btn-toolbar" data-role="editor-toolbar" data-target="#editor">
+      <div class="btn-group">
+        <a class="btn btn-default dropdown-toggle" data-toggle="dropdown" title="Font Size"><i class="fa fa-text-height"></i>&nbsp;<b class="caret"></b></a>
+          <ul class="dropdown-menu">
+          <li><a data-edit="fontSize 5"><font size="5">Huge</font></a></li>
+          <li><a data-edit="fontSize 3"><font size="3">Normal</font></a></li>
+          <li><a data-edit="fontSize 1"><font size="1">Small</font></a></li>
+          </ul>
+      </div>
+      <div class="btn-group">
+        <a class="btn btn-default" data-edit="bold" title="Bold (Ctrl/Cmd+B)"><i class="fa fa-bold"></i></a>
+        <a class="btn btn-default" data-edit="italic" title="Italic (Ctrl/Cmd+I)"><i class="fa fa-italic"></i></a>
+      </div>
+      <div class="btn-group">
+        <a class="btn btn-default" data-edit="insertunorderedlist" title="Bullet list"><i class="fa fa-list-ul"></i></a>
+        <a class="btn btn-default" data-edit="insertorderedlist" title="Number list"><i class="fa fa-list-ol"></i></a>
+      </div>
+      <div class="btn-group">
+        <a class="btn btn-default" data-edit="justifyleft" title="Align Left (Ctrl/Cmd+L)"><i class="fa fa-align-left"></i></a>
+        <a class="btn btn-default" data-edit="justifycenter" title="Center (Ctrl/Cmd+E)"><i class="fa fa-align-center"></i></a>
+        <a class="btn btn-default" data-edit="justifyright" title="Align Right (Ctrl/Cmd+R)"><i class="fa fa-align-right"></i></a>
+        <a class="btn btn-default" data-edit="justifyfull" title="Justify (Ctrl/Cmd+J)"><i class="fa fa-align-justify"></i></a>
+      </div>
+      <div class="btn-group">
+		  <a class="btn btn-default dropdown-toggle" data-toggle="dropdown" title="Hyperlink"><i class="fa fa-link"></i></a>
+		    <div class="dropdown-menu input-append">
+			    <input class="span2" placeholder="URL" type="text" data-edit="createLink"/>
+			    <button class="btn" type="button">Add</button>
+        </div>
+        <a class="btn btn-default" data-edit="unlink" title="Remove Hyperlink"><i class="fa fa-cut"></i></a>
+
+      </div>
+      
+      <div class="btn-group">
+        <a class="btn btn-default" title="Insert picture (or just drag & drop)" id="pictureBtn"><i class="fa fa-picture-o"></i></a>
+        <input type="file" data-role="magic-overlay" data-target="#pictureBtn" data-edit="insertImage" />
+      </div>
+      <div class="btn-group">
+        <a class="btn btn-default" data-edit="undo" title="Undo (Ctrl/Cmd+Z)"><i class="fa fa-undo"></i></a>
+        <a class="btn btn-default" data-edit="redo" title="Redo (Ctrl/Cmd+Y)"><i class="fa fa-repeat"></i></a>
+      </div>
+    </div>
+
+			<div id="editor">{% raw post["content"] %}</div>
+			<input type="hidden" value="2" name="catid" id="catid">
+			<input type="hidden" value="" name="content" id="content">
+			<div id="choose-cat">
+				<select name="parentid" id="parentid">
+					{% for category in categories %}
+					<option value="{{ category["catid"] }}" {% if category["catid"]==post["parentid"] %}selected{% end %}>{{ category["catname"] }}</option>
+					{% end %}
+				</select>
+				{% for parentid,m_categories in child_cats.items() %}
+				<select name="child{{ parentid }}" id="child{{ parentid }}" class="child_cats" {% if parentid != post["parentid"] %}style="display:none;"{% end %} value="{{ parentid }}">
+					{% for m_category in m_categories %}
+					<option value="{{ m_category["catid"] }}" {% if m_category["catid"]==post["cat_id"] %}selected{% end %}>{{ m_category["catname"] }}</option>
+					{% end %}
+				</select>
+		{% end %}
+			</div> 
+			<input type="submit" value="发布文章">
+		</form>
+	</div>
+</div>
+{% end %}
+{% block script %}
+<script>
+	$(document).ready(function() {
+      $('#editor').wysiwyg();
+   });
+	$("#new-post").submit(function(){
+		var cleanedContent = $("#editor").cleanHtml();
+		$("#content").prop("value",cleanedContent);
+	});
+	$("#parentid").change(function(){
+		var parentid = $("#parentid").val();
+		$(".child_cats").each(function(){$(this).css("display","none")})
+		if(parentid>1)
+		{
+			var obj_name = "#child"+parentid;
+			if ($(obj_name + " option").length > 0){
+				$(obj_name).css("display","inline");
+				$(obj_name).click();
+			}
+			else {
+				$("#catid").prop("value",parentid);
+			}
+			//$(obj_name).change();
+		}
+		else{
+			$("#child0 option:first").change();
+		}
+	});
+	$(".child_cats").click(function(){
+		var catid = parseInt($(this).val());
+		var pid = parseInt($(this).prop("id").split("child")[1]);
+		$("#catid").prop("value",catid);
+	});
+</script>
+{% end %}

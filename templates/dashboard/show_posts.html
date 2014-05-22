@@ -1,0 +1,131 @@
+{% extends "dash_base.html" %}
+{% block body %}
+<div id="content-wrapper">
+	<div class="controls-bar">
+		<a href="new" class="btn btn-success">添加文章</a>
+		<a href="javascript:void(0);" class="btn btn-warning" id="del-btn" disabled="disabled">删除文章</a>
+		<select name="parentid" id="parentid">
+			<option value="0">全部</option>
+			{% for category in categories %}
+			<option value="{{ category["catid"] }}">{{ category["catname"] }}</option>
+			{% end %}
+		</select>
+		<select name="child0" id="child0" class="child_cats" style="display:none;" value="0">
+			<option value="0"></option>
+		</select>
+		{% for parentid,m_categories in child_cats.items() %}
+		<select name="child{{ parentid }}" id="child{{ parentid }}" class="child_cats" style="display:none;">
+			<option value="-1">--子分类--</option>
+			<option value="0" onclick="alert(1);">全部</option>
+			{% for m_category in m_categories %}
+			<option value="{{ m_category["catid"] }}">{{ m_category["catname"] }}</option>
+			{% end %}
+		</select>
+		{% end %}
+	</div>
+	<div class="list">
+		<table>
+			<thead>
+			<tr>
+				<th><input type="checkbox" id="checkall"></th>
+				<th>标题</th>
+				<th>作者</th>
+				<th>分类</th>
+				<th>发布日期</th>
+			</tr>
+			</thead>
+			<tbody>
+			{% for post in posts %}
+			<tr>
+				<td><input type="checkbox" name="check-post" value="{{ post["entry_id"] }}"></td>
+				<td><a href="modify?id={{ post["entry_id"] }}">{{post["title"]}}</a></td>
+				<td>{{ post["name"] }}</td>
+				<td>{{ post["catname"] }}</td>
+				<td>{{ post["post_time"].strftime("%Y年%m月%d日") }}</td>
+			</tr>
+			{% end %}
+			</tbody>
+		</table>
+	</div>
+</div>
+{% end %}
+{% block script %}
+<script>
+	function loadPosts(pid, catid, pagenum) {
+		if(pid>=0 && catid>=0 && pagenum>=0){
+			$.post("pull",{"pid":pid, "catid":catid, "pagenum":0}).done(function(data){
+				data = jQuery.parseJSON(data);
+				//console.log(data["posts"].length);
+				$(".list table tbody tr").remove();
+				$(".list table tbody .err_msg").remove();
+				if(data["status"]===0)
+				{
+					console.log("here");
+
+					for (var i = 0; i < data["posts"].length; i++) {
+						var post = data["posts"][i];
+						var obj = '<tr><td><input type="checkbox" name="check-post" value="'+post["entry_id"]+'"></td>';
+						obj = obj + '<td><a href="modify?id='+post["entry_id"]+'">'+post["title"]+'</a></td>';
+						obj = obj + '<td>'+post["name"]+'</td>';
+						obj = obj + '<td>'+post["catname"]+'</td>';
+						obj = obj + '<td>'+post["post_time"]+'</td></tr>';
+						$(".list table tbody").append(obj);
+						//console.log("here2");
+					};
+				}
+				else {
+					$(".list table tbody").append('<div class="err_msg">未获取到该分类下的文章</div>')
+				}
+			});
+		}
+	}
+	//全选按钮
+	$("#checkall").click(function(){
+		checkbox = $(".list table tbody input[type='checkbox']");
+		var status = $("#checkall").prop("checked");
+		//console.log(status);  
+		for (var i = checkbox.length - 1; i >= 0; i--) {
+			$(checkbox[i]).prop("checked",status);
+			//使table中的checkbox全选
+		};
+	});
+	//当有checkbox被点击时，查看是否有被选中的，如果有则使删除按钮可用
+	$(".list input[type='checkbox']").click(function(){
+		if($(".list input[type='checkbox']:checked").length > 0 ){
+			$("#del-btn").attr("disabled",false);
+		}
+		else{
+			$("#del-btn").attr("disabled",true);
+		}
+	});
+	$("#del-btn").click(function(){
+		var obj_list = $(".list input[type='checkbox']:checked");
+		var post_id_list=[];
+		for (var i = obj_list.length - 1; i >= 0; i--) {
+			post_id_list.push($(obj_list[i]).val());
+		};
+		$.post("delete",{"post_id_list":post_id_list}).done(function(){
+			location.href="./";
+		});
+	});
+	//处理分级目录
+	$("#parentid").change(function(){
+		var parentid = $("#parentid").val();
+		$(".child_cats").each(function(){$(this).css("display","none")})
+		if(parentid>1)
+		{
+			var obj_name = "#child"+parentid;
+			$(obj_name).css("display","inline");
+			//$(obj_name).change();
+		}
+		else{
+			$("#child0 option:first").change();
+		}
+	});
+	$(".child_cats").change(function(){
+		var catid = parseInt($(this).val());
+		var pid = parseInt($(this).prop("id").split("child")[1]);
+		loadPosts(pid,catid,0);
+	});
+</script>
+{% end %}

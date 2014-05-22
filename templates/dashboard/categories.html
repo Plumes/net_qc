@@ -1,0 +1,85 @@
+{% extends "dash_base.html" %}
+{% block body %}
+<div id="content-wrapper">
+	<div class="large-col left-col">
+	{% for category in categories %}
+		<div class="cats-box">
+			<table class="table">
+				<thead>
+					<tr id="cat-{{ category["catid"] }}">
+						<input type="hidden" name="cat-name" value="{{ category["catname"] }}" />
+						<input type="hidden" name="cat-parentid" value="1" />
+						<th class="cat-name">{{ category["catname"] }}</th>
+						<th><a href="javascript:void(0);" class="btn btn-primary" onclick="rename(this, {{category["catid"] }} )">重命名</a></th>
+						<th><a href="javascript:void(0);" class="btn btn-danger" onclick="deleteCat(this, {{category["catid"] }} )">删除</a></th>
+						<th><a href="javascript:void(0);" class="btn btn-success" onclick="addCat(this, {{category["catid"] }} )">增加一个子类</a></th>
+						
+					</tr>
+				</thead>
+				<tbody>
+					{% for m_cat in child_cats[category["catid"]] %}
+					<tr id="cat-{{ m_cat["catid"] }}">
+						<input type="hidden" name="cat-name" value="{{ m_cat["catname"] }}" />
+						<input type="hidden" name="cat-parentid" value="{{ category["catid"] }}" />
+						<td class="cat-name">{{ m_cat["catname"] }}</td>
+						<td><a href="javascript:void(0);" class="btn btn-primary" onclick="rename(this, {{m_cat["catid"] }} )">重命名</a></td>
+						<td><a href="javascript:void(0);" class="btn btn-danger" onclick="deleteCat(this, {{m_cat["catid"] }} )">删除</a></td>
+						<td><a href="javascript:void(0);" class="btn btn-success" onclick="move(this, {{m_cat["catid"] }} )">移动</a></td>
+					</tr>
+					{% end %}
+				</tbody>
+			</table>
+		</div>
+		{% end %}
+		<a href="javascript:void(0);" id="add-btn" class="btn btn-default">增加一个一级分类</a>
+	</div>
+</div>
+{% end %}
+{% block script %}
+<script>
+	function updateCat(cat_id){
+		var new_name = $("#cat-"+cat_id+" input[name=cat-name]").val();
+		var new_parentid = $("#cat-"+cat_id+" input[name=cat-parentid]").val();
+		$.post("modify",{"catid":cat_id, "parentid":new_parentid, "catname":new_name}).done(function(){
+			self.location="./";
+		});
+	}
+	function doRename(obj, cat_id){
+		var new_name = $("#cat-"+cat_id+" input[name='new-name']").val();
+		$("#cat-"+cat_id+" input[name=cat-name]").prop("value",new_name);
+		updateCat(cat_id);
+	}
+	function rename (obj, cat_id) {
+		var name_field = $(obj).parent().parent().children(".cat-name");
+		console.log(name_field);
+		var cur_name = $(name_field).text();
+		$(name_field).html('<input type="text" name="new-name" value="'+cur_name+'" class="form-control"/>');
+		$(obj).replaceWith('<div class="button-group"><a href="javascript:void(0);" class="btn btn-success" onclick="doRename(this,'+cat_id+');">确认</a><a href="./" class="btn btn-default" >取消</a></div>');
+	}
+	function deleteCat(obj, cat_id){
+		$.post("delete",{"catid":cat_id}).done(function(){
+			self.location="./";
+		});
+	}
+	function doAdd(obj, parentid){
+		var new_name = $(obj).parent().parent().parent().children(".cat-name").children("input[name=new-name]").val();
+		console.log(new_name);
+		//var new_parentid = $(obj).parent().parent().children("input[name=cat-parentid]").val();
+		$.post("add",{"parentid":parentid, "catname":new_name}).done(function(){
+			self.location="./";
+		});
+	}
+	function addCat(obj, parentid){
+		content = '<tr>'+
+					'<td class="cat-name"><input type="text" name="new-name" placeholder="请输入分类标题" class="form-control"/></td>'+
+					'<td><div class="button-group"><a href="javascript:void(0);" class="btn btn-success" onclick="doAdd(this,'+parentid+');">确认</a><a href="./" class="btn btn-default" >取消</a></div></td><td></td><td></td>';
+		$(obj).parent().parent().parent().parent().children("tbody").append(content);
+	}
+	$("#add-btn").click(function(){
+		content = '<div class="cats-box"><table class="table"><thead><tr>'+
+					'<th class="cat-name"><input type="text" name="new-name" placeholder="请输入分类标题" class="form-control"/></th>'+
+					'<th><div class="button-group"><a href="javascript:void(0);" class="btn btn-success" onclick="doAdd(this,1);">确认</a><a href="./" class="btn btn-default" >取消</a></div></th><th></th><th></th>'+'</tr></thead></table><div>';
+		$(this).before(content);
+	});
+</script>
+{% end %}
